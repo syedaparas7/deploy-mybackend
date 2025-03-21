@@ -12,17 +12,27 @@ connectToDatabase()
 
 
 const app = express() 
-app.use(cors()) 
+
 app.use(express.json()) 
+
+const corsOptions = {
+  origin: process.env.FRONTEND_URL, // Frontend (URL)
+  credentials: true, // Agar cookies ya authentication hai
+};
+
+app.use(cors(corsOptions));
+
 app.use('/api/auth', authRouter)
 app.use('/api/projects', projectRouter)
 app.use('/api/employee', employeeRouter)
 app.use('/api/users', userRoutes);
 
 
-
+app.get('/',(req,res)=>{
+  res.send('only /')
+})
 app.get('/get',(req,res)=>{
-  res.send('Hello World')
+  res.send('Hello World backend')
 })
 app.listen(process.env.PORT ||5000, () => { 
   console.log(`Server is Running on port ${process.env.PORT}`)
