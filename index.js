@@ -12,13 +12,19 @@ connectToDatabase()
 
 const app = express() 
 app.use(express.json()) 
-
+app.use(express.urlencoded({ extended: true }));  // ✅ Support URL-encoded bodies
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // ✅ Allow all methods
+ allowedHeaders: ['Content-Type', 'Authorization'], // ✅ Important for auth
+
 }));
+app.post('/api/test', (req, res) => {
+  console.log(req.body); // ✅ Check if request body is received
+  res.send('POST request working!');
+});
 
 
 app.use('/api/auth', authRouter)
